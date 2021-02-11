@@ -17,12 +17,12 @@ function get_t(zero = start) {
 }
 
 class Pendulum {
-    constructor(a = 1, k = 0, f = 0, y = 0, height = 0, n = 0, color = 'black', width = 1) {
+    constructor(m = 1, a = 0, k = 0, f = 0, y = 0, height = 0, n = 0, color = 'black', width = 1) {
         this.t = Date.now()
         this.f = f
         this.a = a
         this.k = k
-        this.w = Math.sqrt(k / (a * 4))
+        this.w = Math.sqrt(k / m)
         this.y = y
         this.n = n
         this.height = height
@@ -62,12 +62,12 @@ class Pendulum {
         pendulums = []
     }
 
-    static create(amplitude = 0, spring_strength_k = 0, initial_state = 0, y_position = 0, spring_height = 100, spring_sections_n = 10, color = 'black', width = 1) {
-        pendulums.push(new Pendulum(amplitude, spring_strength_k, initial_state, y_position, spring_height, spring_sections_n, color, width))
+    static create(mass = 1, amplitude = 0, spring_strength_k = 0, initial_state = 0, y_position = 0, spring_height = 100, spring_sections_n = 10, color = 'black', width = 1) {
+        pendulums.push(new Pendulum(mass, amplitude, spring_strength_k, initial_state, y_position, spring_height, spring_sections_n, color, width))
     }
 
     static create_seria(
-        amplitude_a = 0, spring_strength_k = 0,
+        mass = 1, amplitude_a = 0, spring_strength_k = 0,
         initial_state_func = (i) => 0.1 * i,
         y_position_func = (i) => 100 * i,
         spring_height_func = () => 100,
@@ -76,13 +76,13 @@ class Pendulum {
         width_func = (i) => i + 1) {
         for (let i = 0; i < 10; ++i)
             pendulums.push(new Pendulum(
-                amplitude_a, spring_strength_k,
+                mass, amplitude_a, spring_strength_k,
                 initial_state_func(i), y_position_func(i), spring_height_func(i), spring_sections_func(i), color_func(i), width_func(i)))
     }
 }
 
 var interval = setInterval(() => Pendulum.drawAll(), 0);
 
-Pendulum.create(5, 500)
-Pendulum.create(5, 500, 10, 300)
-Pendulum.create(1, 1000, 0, 600, 50, 50, 'red', 1)
+Pendulum.create(10, 5, 500)
+Pendulum.create(10, 5, 500, 1, 300)
+Pendulum.create(5, 10, 100, 0, 600, 50, 50, 'red', 1)
